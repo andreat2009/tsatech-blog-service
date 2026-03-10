@@ -2,6 +2,8 @@ package com.newproject.blog.domain;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "blog_post")
@@ -31,6 +33,9 @@ public class BlogPost {
     @Column(nullable = false)
     private Boolean active;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlogPostTranslation> translations = new ArrayList<>();
+
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
@@ -53,6 +58,8 @@ public class BlogPost {
     public void setPublishedAt(OffsetDateTime publishedAt) { this.publishedAt = publishedAt; }
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
+    public List<BlogPostTranslation> getTranslations() { return translations; }
+    public void setTranslations(List<BlogPostTranslation> translations) { this.translations = translations; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }

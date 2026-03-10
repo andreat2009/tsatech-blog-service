@@ -5,8 +5,10 @@ import com.newproject.blog.dto.BlogCommentResponse;
 import com.newproject.blog.dto.BlogPostRequest;
 import com.newproject.blog.dto.BlogPostResponse;
 import com.newproject.blog.service.BlogService;
+import com.newproject.blog.service.LanguageSupport;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +22,33 @@ public class BlogController {
     }
 
     @GetMapping("/posts")
-    public List<BlogPostResponse> listPosts(@RequestParam(required = false) Boolean active) {
-        return service.listPosts(active);
+    public List<BlogPostResponse> listPosts(
+        @RequestParam(required = false) Boolean active,
+        @RequestParam(required = false) String lang,
+        @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
+    ) {
+        String resolvedLanguage = LanguageSupport.resolveLanguage(lang, acceptLanguage);
+        return service.listPosts(active, resolvedLanguage);
     }
 
     @GetMapping("/posts/{id}")
-    public BlogPostResponse getPost(@PathVariable Long id) {
-        return service.getPost(id);
+    public BlogPostResponse getPost(
+        @PathVariable Long id,
+        @RequestParam(required = false) String lang,
+        @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
+    ) {
+        String resolvedLanguage = LanguageSupport.resolveLanguage(lang, acceptLanguage);
+        return service.getPost(id, resolvedLanguage);
     }
 
     @GetMapping("/posts/slug/{slug}")
-    public BlogPostResponse getPostBySlug(@PathVariable String slug) {
-        return service.getPostBySlug(slug);
+    public BlogPostResponse getPostBySlug(
+        @PathVariable String slug,
+        @RequestParam(required = false) String lang,
+        @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
+    ) {
+        String resolvedLanguage = LanguageSupport.resolveLanguage(lang, acceptLanguage);
+        return service.getPostBySlug(slug, resolvedLanguage);
     }
 
     @PostMapping("/posts")
