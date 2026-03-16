@@ -52,6 +52,7 @@ public class SecurityConfig {
         if (realmAccess != null && realmAccess.get("roles") instanceof List<?> roles) {
             for (Object role : roles) {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase(java.util.Locale.ROOT)));
             }
         }
 
@@ -63,6 +64,7 @@ public class SecurityConfig {
                     if (rolesObj instanceof List<?> roles) {
                         for (Object role : roles) {
                             authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase(java.util.Locale.ROOT)));
                         }
                     }
                 }
