@@ -170,7 +170,8 @@ public class BlogService {
         LocalizedContent defaultContent = normalizedTranslations.get(LanguageSupport.DEFAULT_LANGUAGE);
         post.setTitle(defaultContent.getTitle());
         post.setExcerpt(defaultContent.getExcerpt());
-        post.setContent(defaultContent.getContent());
+        // SECURITY (H7): il content e' reso con th:utext -> sanitizzare l'HTML prima del persist.
+        post.setContent(BlogHtmlSanitizer.sanitize(defaultContent.getContent()));
         post.setSlug(uniqueSlug(request.getSlug(), defaultContent.getTitle(), createMode ? null : post.getId()));
         post.setAuthor(request.getAuthor());
         post.setPublishedAt(request.getPublishedAt());
@@ -199,7 +200,8 @@ public class BlogService {
             }
             translation.setTitle(localizedContent.getTitle());
             translation.setExcerpt(localizedContent.getExcerpt());
-            translation.setContent(localizedContent.getContent());
+            // SECURITY (H7): sanitizza l'HTML di ogni traduzione (reso con th:utext).
+            translation.setContent(BlogHtmlSanitizer.sanitize(localizedContent.getContent()));
         }
 
         post.getTranslations().removeIf(translation ->

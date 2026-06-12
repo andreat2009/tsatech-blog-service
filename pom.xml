@@ -13,7 +13,7 @@
     <java.version>17</java.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <spring-boot.version>3.3.4</spring-boot.version>
+    <spring-boot.version>3.3.13</spring-boot.version>
   </properties>
 
   <dependencyManagement>
@@ -75,6 +75,13 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <!-- SECURITY (H7): sanitizzazione HTML del content dei post (reso con th:utext). -->
+    <dependency>
+      <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+      <artifactId>owasp-java-html-sanitizer</artifactId>
+      <version>20240325.1</version>
     </dependency>
 
     <dependency>
